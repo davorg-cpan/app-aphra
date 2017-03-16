@@ -61,7 +61,6 @@ sub run {
 
 sub make_do_this {
   my $self = shift;
-  my $tt   = $self->template;
 
   return sub {
     debug("File is: $_\n");
@@ -78,8 +77,8 @@ sub make_do_this {
       $out =~ s|^in/||;
 
       debug("tt: $_ -> $out\n");
-      $tt->process($_, {}, $out)
-        or die $tt->error;
+      $self->template->process($_, {}, $out)
+        or die $self->template->error;
     } else {
       debug("Copy: $_ -> docs/$dest\n");
       copy $_, "docs/$dest";
@@ -88,7 +87,7 @@ sub make_do_this {
 }
 
 sub debug {
-  warn @_ if $ENV{TT_DEBUG};
+  warn @_ if $ENV{UTTERSON_DEBUG};
 }
 
 1;
