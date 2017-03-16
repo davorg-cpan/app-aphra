@@ -17,3 +17,7 @@
 > chambers, he never marked a shade of change in his demeanour. 
 >
 > *Strange Case of Dr. Jekyll and Mr. Hyde* - Robert Louis Stevenson (1886)
+
+I wanted to call this project "Hyde", because it's a lot like [Jekyll](http://jekyllrb.com/) (except it's uglier and more powerful) but the Python people [got to the name first](http://hyde.github.io/).
+
+Gabriel John Utterson is another really important character from [the book](http://www.gutenberg.org/ebooks/43). It is Utterson's search for Hyde's identity that drives the book's plot.
