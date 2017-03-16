@@ -19,6 +19,7 @@ has config => (
 
 sub _build_config {
   return {
+    source       => 'in',
     include_path => ["$Bin/../tt_lib", "$Bin/.." ],
     output_path  => "$Bin/../docs",
   };
@@ -56,7 +57,8 @@ sub _build_template {
 sub run {
   my $self = shift;
 
-  find({ wanted => $self->make_do_this, no_chdir => 1 }, 'in');
+  find({ wanted => $self->make_do_this, no_chdir => 1 },
+       $self->config->{source});
 }
 
 sub make_do_this {
@@ -65,8 +67,9 @@ sub make_do_this {
   return sub {
     debug("File is: $_\n");
     return unless -f;
+    my $src = $self->config->{source};
     debug("File::Find::dir: $File::Find::dir\n");
-    my $dest = $File::Find::dir =~ s|^in/?||r;
+    my $dest = $File::Find::dir =~ s|^$src/?||r;
     debug("Dest: $dest\n");
 
     debug("docs/$dest");
@@ -74,7 +77,7 @@ sub make_do_this {
 
     if (/\.tt$/) {
       my $out = s|\.tt$||r;
-      $out =~ s|^in/||;
+      $out =~ s|^$src/||;
 
       debug("tt: $_ -> $out\n");
       $self->template->process($_, {}, $out)
