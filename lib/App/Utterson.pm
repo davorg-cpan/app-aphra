@@ -11,6 +11,14 @@ use File::Find;
 use File::Path 'make_path';
 use File::Copy;
 
+has commands => (
+  isa => 'HashRef',
+  is  => 'ro',
+  default => sub { {
+    build => \&build,
+  } },
+);
+
 has config => (
   isa => 'HashRef',
   is  => 'ro',
@@ -56,6 +64,25 @@ sub _build_template {
 
 sub run {
   my $self = shift;
+
+  @ARGV or die "Must give a command\n";
+
+  my $cmd = shift @ARGV;
+
+  if (my $method = $self->commands->{$cmd}) {
+    $self->$method;
+  } else {
+    die "$cmd is not a valid command\n";
+  }
+}
+
+sub build {
+  my $self = shift;
+
+  my $src = $self->config->{source};
+
+  -e $src or die "Cannot find $src\n";
+  -d $src or die "$src is not a directory\n";
 
   find({ wanted => $self->make_do_this, no_chdir => 1 },
        $self->config->{source});
