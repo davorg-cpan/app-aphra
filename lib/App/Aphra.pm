@@ -5,7 +5,7 @@ use warnings;
 
 use Moose;
 use Template;
-use Pandoc ();
+use Template::Provider::Markdown;
 use FindBin '$Bin';
 use File::Find;
 use File::Path 'make_path';
@@ -94,12 +94,12 @@ sub _build_template {
   my $self = shift;
 
   return Template->new(
+    LOAD_TEMPLATES => [
+      Template::Provider::Markdown->new(INCLUDE_PATH => $self->include_path)
+    ],
     INCLUDE_PATH => $self->include_path,
     OUTPUT_PATH  => $self->config->{target},
     WRAPPER      => 'page',
-    FILTERS      => {
-      markdown   => sub { $self->pandoc->convert(markdown => 'html', $_[0]) },
-    },
   );
 }
 
@@ -143,7 +143,7 @@ sub make_do_this {
     debug("docs/$dest");
     make_path "docs/$dest";
 
-    if (/\.tt$/) {
+    if (/\.tt$/ or /\.md$/) {
       # The template name needs to be relative to one of the paths
       # in INCLUDE_PATH. So we need to remove $src from the start.
 
