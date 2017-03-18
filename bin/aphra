@@ -3,6 +3,6 @@
 use strict;
 use warnings;
 
-use App::Utterson;
+use App::Aphra;
 
-App::Utterson->new->run;
+App::Aphra->new->run;

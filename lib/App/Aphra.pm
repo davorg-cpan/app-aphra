@@ -1,4 +1,4 @@
-package App::Utterson;
+package App::Aphra;
 
 use strict;
 use warnings;
@@ -27,9 +27,10 @@ has config => (
 
 sub _build_config {
   return {
-    source       => 'in',
-    include_path => ["$Bin/../tt_lib", "$Bin/.." ],
-    output_path  => "$Bin/../docs",
+    source    => 'in',
+    fragments => 'fragments',
+    layouts   => 'layouts',
+    target    => 'docs',
   };
 }
 
@@ -43,6 +44,24 @@ sub _build_pandoc {
   return Pandoc->new;
 }
 
+has include_path => (
+  isa => 'ArrayRef',
+  is  => 'ro',
+  lazy_build => 1,
+);
+
+sub _build_include_path {
+  my $self = shift;
+
+  my $include_path;
+  foreach (qw[source fragments layouts]) {
+    push @$include_path, $self->config->{$_}
+      if exists $self->config->{$_};
+  }
+
+  return $include_path;
+}
+
 has template => (
   isa => 'Template',
   is  => 'ro',
@@ -53,8 +72,8 @@ sub _build_template {
   my $self = shift;
 
   return Template->new(
-    INCLUDE_PATH => $self->config->{include_path},
-    OUTPUT_PATH  => $self->config->{output_path},
+    INCLUDE_PATH => $self->include_path,
+    OUTPUT_PATH  => $self->config->{target},
     WRAPPER      => 'page',
     FILTERS      => {
       markdown   => sub { $self->pandoc->convert(markdown => 'html', $_[0]) },
@@ -103,11 +122,16 @@ sub make_do_this {
     make_path "docs/$dest";
 
     if (/\.tt$/) {
-      my $out = s|\.tt$||r;
-      $out =~ s|^$src/||;
+      # The template name needs to be relative to one of the paths
+      # in INCLUDE_PATH. So we need to remove $src from the start.
 
-      debug("tt: $_ -> $out\n");
-      $self->template->process($_, {}, $out)
+      my $template = s|^$src/||r;
+
+      # The output file need the ".tt" removed from the end.
+      my $out = $template =~ s|\.tt$||r;
+
+      debug("tt: $template -> $out\n");
+      $self->template->process($template, {}, $out)
         or die $self->template->error;
     } else {
       debug("Copy: $_ -> docs/$dest\n");
