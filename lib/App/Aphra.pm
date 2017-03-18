@@ -10,14 +10,30 @@ use FindBin '$Bin';
 use File::Find;
 use File::Path 'make_path';
 use File::Copy;
+use Getopt::Long;
 
 has commands => (
   isa => 'HashRef',
-  is  => 'ro',
+  is => 'ro',
   default => sub { {
     build => \&build,
   } },
 );
+
+has config_defaults => (
+  isa => 'HashRef',
+  is  => 'ro',
+  lazy_build => 1,
+);
+
+sub _build_config_defaults {
+  return {
+    source    => 'in',
+    fragments => 'fragments',
+    layouts   => 'layouts',
+    target    => 'docs',
+  };
+}
 
 has config => (
   isa => 'HashRef',
@@ -26,12 +42,18 @@ has config => (
 );
 
 sub _build_config {
-  return {
-    source    => 'in',
-    fragments => 'fragments',
-    layouts   => 'layouts',
-    target    => 'docs',
-  };
+  my $self = shift;
+
+  my %opts;
+  GetOptions(\%opts, 'source:s', 'fragments:s', 'layouts:s', 'target:s');
+
+  my %defaults = %{ $self->config_defaults };
+
+  my %config;
+  for (qw[source fragments layouts target]) {
+    $config{$_} = $opts{$_} // $defaults{$_};
+  }
+  return \%config;
 }
 
 has pandoc => (
