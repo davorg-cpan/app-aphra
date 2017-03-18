@@ -1,4 +1,4 @@
-> Aphra Behn (/ˈæfrə bɛn/;[a] 14 December 1640? – 16 April 1689) was a British
+> Aphra Behn (/ˈæfrə bɛn/; 14 December 1640? – 16 April 1689) was a British
 > playwright, poet, translator and fiction writer from the Restoration era. As
 > one of the first English women to earn her living by her writing, she broke
 > cultural barriers and served as a literary role model for later generations
