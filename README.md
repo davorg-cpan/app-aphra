@@ -1,23 +1,23 @@
-> Mr. Utterson the lawyer was a man of a rugged countenance, that was never
-> lighted by a smile; cold, scanty and embarrassed in discourse; backward in
-> sentiment; lean, long, dusty, dreary, and yet somehow lovable. At friendly
-> meetings, and when the wine was to his taste, something eminently human
-> beaconed from his eye; something indeed which never found its way into his
-> talk, but which spoke not only in these silent symbols of the after-dinner
-> face, but more often and loudly in the acts of his life. He was austere with
-> himself; drank gin when he was alone, to mortify a taste for vintages; and
-> though he enjoyed the theatre, had not crossed the doors of one for twenty
-> years. But he had an approved tolerance for others; sometimes wondering,
-> almost with envy, at the high pressure of spirits involved in their misdeeds;
-> and in any extremity inclined to help rather than to reprove. “I incline to
-> Cain’s heresy,” he used to say quaintly: “I let my brother go to the devil
-> in his own way.” In this character, it was frequently his fortune to be the
-> last reputable acquaintance and the last good influence in the lives of
-> downgoing men. And to such as these, so long as they came about his
-> chambers, he never marked a shade of change in his demeanour. 
+> Aphra Behn (/ˈæfrə bɛn/;[a] 14 December 1640? – 16 April 1689) was a British
+> playwright, poet, translator and fiction writer from the Restoration era. As
+> one of the first English women to earn her living by her writing, she broke
+> cultural barriers and served as a literary role model for later generations
+> of women authors. Rising from obscurity, she came to the notice of Charles
+> II, who employed her as a spy in Antwerp. Upon her return to London and a
+> probable brief stay in debtors' prison, she began writing for the stage. She
+> belonged to a coterie of poets and famous libertines such as John Wilmot,
+> Lord Rochester. She wrote under the pastoral pseudonym Astrea. During the
+> turbulent political times of the Exclusion Crisis, she wrote an epilogue
+> and prologue that brought her into legal trouble; she thereafter devoted
+> most of her writing to prose genres and translations. A staunch supporter
+> of the Stuart line, she declined an invitation from Bishop Burnet to write
+> a welcoming poem to the new king William III. She died shortly after.
+> 
+> She is famously remembered in Virginia Woolf's A Room of One's Own: "All
+> women together ought to let flowers fall upon the tomb of Aphra Behn which
+> is, most scandalously but rather appropriately, in Westminster Abbey, for
+> it was she who earned them the right to speak their minds." Her grave
+> is not included in the Poets' Corner but lies in the East Cloister near
+> the steps to the church.
 >
-> *Strange Case of Dr. Jekyll and Mr. Hyde* - Robert Louis Stevenson (1886)
-
-I wanted to call this project "Hyde", because it's a lot like [Jekyll](http://jekyllrb.com/) (except it's uglier and more powerful) but the Python people [got to the name first](http://hyde.github.io/).
-
-Gabriel John Utterson is another really important character from [the book](http://www.gutenberg.org/ebooks/43). It is Utterson's search for Hyde's identity that drives the book's plot.
+> *Aphra Behn* - [Wikipedia](https://en.wikipedia.org/wiki/Aphra_Behn)
