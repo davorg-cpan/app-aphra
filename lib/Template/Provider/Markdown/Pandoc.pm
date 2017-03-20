@@ -1,4 +1,4 @@
-package Template::Provider::Markdown;
+package Template::Provider::Markdown::Pandoc;
 
 use strict;
 use warnings;

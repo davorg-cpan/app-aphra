@@ -5,7 +5,7 @@ use warnings;
 
 use Moose;
 use Template;
-use Template::Provider::Markdown;
+use Template::Provider::Markdown::Pandoc;
 use FindBin '$Bin';
 use File::Find;
 use File::Path 'make_path';
@@ -95,7 +95,9 @@ sub _build_template {
 
   return Template->new(
     LOAD_TEMPLATES => [
-      Template::Provider::Markdown->new(INCLUDE_PATH => $self->include_path)
+      Template::Provider::Markdown::Pandoc->new(
+        INCLUDE_PATH => $self->include_path
+      ),
     ],
     INCLUDE_PATH => $self->include_path,
     OUTPUT_PATH  => $self->config->{target},
