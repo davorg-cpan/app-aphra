@@ -14,7 +14,8 @@ sub _template_content {
   my ($data, $error, $mod_date) = $self->SUPER::_template_content($path);
 
   if ($path =~ /\.md$/) {
-    $data = pandoc->convert(markdown => 'html', $data);
+    $pandoc //= pandoc;
+    $data = $pandoc->convert(markdown => 'html', $data);
   }
 
   return ($data, $error, $mod_date) if wantarray;
