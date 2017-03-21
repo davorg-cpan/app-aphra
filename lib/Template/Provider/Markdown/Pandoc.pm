@@ -11,7 +11,8 @@ sub new {
   my $class = shift;
   my %opts  = @_;
 
-  my $ext = delete $opts{EXTENSION};
+  my $ext = exists $opts{EXTENSTION} ?
+    delete $opts{EXTENSION} : 'md';
 
   my $self = $class->SUPER::new(%opts);
 
@@ -26,7 +27,7 @@ sub _template_content {
 
   my ($data, $error, $mod_date) = $self->SUPER::_template_content($path);
 
-  if (! $self->{extension} or $path =~ /\.\Q$self->{extension}\E$/) {
+  if (! defined $self->{extension} or $path =~ /\.\Q$self->{extension}\E$/) {
     $pandoc //= pandoc;
     $data = $pandoc->convert(markdown => 'html', $data);
   }
