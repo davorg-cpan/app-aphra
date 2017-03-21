@@ -20,6 +20,15 @@ has commands => (
   } },
 );
 
+has extensions => (
+  isa => 'HashRef',
+  is  => 'ro',
+  default => sub { {
+    template => 'tt',
+    markdown => 'md',
+  } },
+);
+
 has config_defaults => (
   isa => 'HashRef',
   is  => 'ro',
@@ -96,7 +105,8 @@ sub _build_template {
   return Template->new(
     LOAD_TEMPLATES => [
       Template::Provider::Markdown::Pandoc->new(
-        INCLUDE_PATH => $self->include_path
+        INCLUDE_PATH => $self->include_path,
+        EXTENSION    => $self->extensions->{markdown},
       ),
     ],
     INCLUDE_PATH => $self->include_path,
@@ -145,7 +155,7 @@ sub make_do_this {
     debug("docs/$dest");
     make_path "docs/$dest";
 
-    if (/\.tt$/ or /\.md$/) {
+    if ($self->is_template($_)) {
       # The template name needs to be relative to one of the paths
       # in INCLUDE_PATH. So we need to remove $src from the start.
 
@@ -162,6 +172,17 @@ sub make_do_this {
       copy $_, "docs/$dest";
     }
   };
+}
+
+sub is_template {
+  my $self = shift;
+  my ($file) = @_;
+
+  for (values %{$self->extensions}) {
+    return 1 if $file =~ /\.$_$/;
+  }
+
+  return;
 }
 
 sub debug {
