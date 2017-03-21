@@ -26,7 +26,7 @@ sub _template_content {
 
   my ($data, $error, $mod_date) = $self->SUPER::_template_content($path);
 
-  if (! $self->{extension} or $path =~ /\.$self->{extension}$/) {
+  if (! $self->{extension} or $path =~ /\.\Q$self->{extension}\E$/) {
     $pandoc //= pandoc;
     $data = $pandoc->convert(markdown => 'html', $data);
   }

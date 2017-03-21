@@ -179,7 +179,7 @@ sub is_template {
   my ($file) = @_;
 
   for (values %{$self->extensions}) {
-    return 1 if $file =~ /\.$_$/;
+    return 1 if $file =~ /\.\Q$_\E$/;
   }
 
   return;
