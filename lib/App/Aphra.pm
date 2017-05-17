@@ -186,7 +186,7 @@ sub is_template {
 }
 
 sub debug {
-  warn @_ if $ENV{UTTERSON_DEBUG};
+  warn @_ if $ENV{APHRA_DEBUG};
 }
 
 1;
