@@ -40,6 +40,7 @@ sub _build_config_defaults {
     source    => 'in',
     fragments => 'fragments',
     layouts   => 'layouts',
+    wrapper   => 'page',
     target    => 'docs',
   };
 }
@@ -54,12 +55,13 @@ sub _build_config {
   my $self = shift;
 
   my %opts;
-  GetOptions(\%opts, 'source:s', 'fragments:s', 'layouts:s', 'target:s');
+  GetOptions(\%opts,
+             'source:s', 'fragments:s', 'layouts:s', 'wrapper:s', 'target:s');
 
   my %defaults = %{ $self->config_defaults };
 
   my %config;
-  for (qw[source fragments layouts target]) {
+  for (qw[source fragments layouts wrapper target]) {
     $config{$_} = $opts{$_} // $defaults{$_};
   }
   return \%config;
@@ -111,7 +113,7 @@ sub _build_template {
     ],
     INCLUDE_PATH => $self->include_path,
     OUTPUT_PATH  => $self->config->{target},
-    WRAPPER      => 'page',
+    WRAPPER      => $self->config->{wrapper},,
   );
 }
 
@@ -156,6 +158,7 @@ sub make_do_this {
     make_path "docs/$dest";
 
     if ($self->is_template($_)) {
+      debug("It's a template");
       # The template name needs to be relative to one of the paths
       # in INCLUDE_PATH. So we need to remove $src from the start.
 
