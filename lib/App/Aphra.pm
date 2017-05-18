@@ -12,6 +12,8 @@ use File::Path 'make_path';
 use File::Copy;
 use Getopt::Long;
 
+our $VERSION = '0.0.1';
+
 has commands => (
   isa => 'HashRef',
   is => 'ro',
