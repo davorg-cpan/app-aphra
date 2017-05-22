@@ -22,15 +22,6 @@ has commands => (
   } },
 );
 
-has extensions => (
-  isa => 'HashRef',
-  is  => 'ro',
-  default => sub { {
-    template => 'tt',
-    markdown => 'md',
-  } },
-);
-
 has config_defaults => (
   isa => 'HashRef',
   is  => 'ro',
@@ -39,11 +30,15 @@ has config_defaults => (
 
 sub _build_config_defaults {
   return {
-    source    => 'in',
-    fragments => 'fragments',
-    layouts   => 'layouts',
-    wrapper   => 'page',
-    target    => 'docs',
+    source     => 'in',
+    fragments  => 'fragments',
+    layouts    => 'layouts',
+    wrapper    => 'page',
+    target     => 'docs',
+    extensions => {
+      template => 'tt',
+      markdown => 'md',
+    },
   };
 }
 
@@ -63,7 +58,7 @@ sub _build_config {
   my %defaults = %{ $self->config_defaults };
 
   my %config;
-  for (qw[source fragments layouts wrapper target]) {
+  for (keys %defaults) {
     $config{$_} = $opts{$_} // $defaults{$_};
   }
   return \%config;
@@ -110,12 +105,12 @@ sub _build_template {
     LOAD_TEMPLATES => [
       Template::Provider::Markdown::Pandoc->new(
         INCLUDE_PATH => $self->include_path,
-        EXTENSION    => $self->extensions->{markdown},
+        EXTENSION    => $self->config->{extensions}{markdown},
       ),
     ],
     INCLUDE_PATH => $self->include_path,
     OUTPUT_PATH  => $self->config->{target},
-    WRAPPER      => $self->config->{wrapper},,
+    WRAPPER      => $self->config->{wrapper},
   );
 }
 
@@ -183,7 +178,7 @@ sub is_template {
   my $self = shift;
   my ($file) = @_;
 
-  for (values %{$self->extensions}) {
+  for (values %{$self->config->{extensions}}) {
     return 1 if $file =~ /\.\Q$_\E$/;
   }
 
