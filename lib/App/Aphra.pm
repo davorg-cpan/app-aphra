@@ -36,6 +36,7 @@ sub _build_config_defaults {
       template => 'tt',
       markdown => 'md',
     },
+    output     => 'html',
   };
 }
 
@@ -59,16 +60,6 @@ sub _build_config {
     $config{$_} = $opts{$_} // $defaults{$_};
   }
   return \%config;
-}
-
-has pandoc => (
-  isa => 'Pandoc',
-  is  => 'ro',
-  lazy_build => 1,
-);
-
-sub _build_pandoc {
-  return Pandoc->new;
 }
 
 has include_path => (
@@ -101,8 +92,9 @@ sub _build_template {
   return Template->new(
     LOAD_TEMPLATES => [
       Template::Provider::Pandoc->new(
-        INCLUDE_PATH => $self->include_path,
-        EXTENSIONS   => $self->config->{extensions},
+        INCLUDE_PATH  => $self->include_path,
+        EXTENSIONS    => $self->config->{extensions},
+        OUTPUT_FORMAT => $self->config->{output},
       ),
     ],
     INCLUDE_PATH => $self->include_path,
