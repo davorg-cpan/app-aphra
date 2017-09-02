@@ -36,7 +36,7 @@ use Getopt::Long;
 use Carp;
 use Clone 'clone';
 
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 
 has commands => (
   isa => 'HashRef',
