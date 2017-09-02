@@ -34,6 +34,7 @@ use File::Copy;
 use File::Basename;
 use Getopt::Long;
 use Carp;
+use Clone;
 
 our $VERSION = '0.0.1';
 
@@ -121,11 +122,14 @@ has template => (
 sub _build_template {
   my $self = shift;
 
+  my $exts = Clone $self->config-{extensions};
+  delete $exts->{template};
+
   return Template->new(
     LOAD_TEMPLATES => [
       Template::Provider::Pandoc->new(
         INCLUDE_PATH  => $self->include_path,
-        EXTENSIONS    => $self->config->{extensions},
+        EXTENSIONS    => $exts,
         OUTPUT_FORMAT => $self->config->{output},
       ),
     ],
@@ -229,3 +233,16 @@ sub debug {
 }
 
 1;
+
+=head1 AUTHOR
+
+Dave Cross <dave@perlhacks.com>
+
+=head1 COPYRIGHT AND LICENCE
+
+Copyright (c) 2017, Magnum Solutions Ltd. All Rights Reserved.
+
+This library is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut
