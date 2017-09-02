@@ -1,5 +1,7 @@
 package App::Aphra;
 
+use 5.014;
+
 use Moose;
 use Template;
 use Template::Provider::Pandoc;
