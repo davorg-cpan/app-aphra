@@ -5,7 +5,7 @@ WriteMakefile(
   VERSION_FROM => 'lib/App/Aphra.pm',
   LICENSE      => 'perl_5',
 
-  EXE_FILES    => [ 'aphra' ],
+  EXE_FILES    => [ 'bin/aphra' ],
 
   PREREQ_PM    => {
     Template => 0,
