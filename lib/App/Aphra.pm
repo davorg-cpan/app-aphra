@@ -1,3 +1,25 @@
+=head1 NAME
+
+App::Aphra - A simple static sitebuilder in Perl.
+
+=head1 SYNOPSIS
+
+    use App::Aphra;
+
+    @ARGV = qw[build];
+
+    my $app = App::Aphra->new;
+    $app->run;
+
+=head1 DESCRIPTION
+
+For now, you probably want to look at the command-line program L<aphra>
+which does all you want and is far better documented.
+
+I'll improve this documentation in the future.
+
+=cut
+
 package App::Aphra;
 
 use 5.014;
@@ -9,6 +31,7 @@ use FindBin '$Bin';
 use File::Find;
 use File::Path 'make_path';
 use File::Copy;
+use File::Basename;
 use Getopt::Long;
 use Carp;
 
@@ -54,7 +77,13 @@ sub _build_config {
 
   my %opts;
   GetOptions(\%opts,
-             'source:s', 'fragments:s', 'layouts:s', 'wrapper:s', 'target:s');
+             'source=s', 'fragments=s', 'layouts=s', 'wrapper=s',
+             'target=s', 'extensions=s%', 'output=s',
+             'version', 'help');
+
+  for (qw[version help]) {
+    $self->$_ and exit if $opts{$_};
+  }
 
   my %defaults = %{ $self->config_defaults };
 
@@ -108,6 +137,8 @@ sub _build_template {
 
 sub run {
   my $self = shift;
+
+  $self->config;
 
   @ARGV or die "Must give a command\n";
 
@@ -175,6 +206,22 @@ sub is_template {
   }
 
   return;
+}
+
+sub version {
+  my $me = basename $0;
+  say "\n$me version: $VERSION\n";
+}
+
+sub help {
+  my $self = shift;
+  my $me = basename $0;
+  $self->version;
+
+  say <<ENDOFHELP;
+$me is a simple static sitebuilder which uses the Template Toolkit to
+process input templates and turn them into a web site.
+ENDOFHELP
 }
 
 sub debug {
