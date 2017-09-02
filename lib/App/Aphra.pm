@@ -10,6 +10,7 @@ use File::Find;
 use File::Path 'make_path';
 use File::Copy;
 use Getopt::Long;
+use Carp;
 
 our $VERSION = '0.0.1';
 
@@ -157,7 +158,7 @@ sub _make_do_this {
 
       debug("tt: $template -> $out\n");
       $self->template->process($template, {}, $out)
-        or die $self->template->error;
+        or croak $self->template->error;
     } else {
       debug("Copy: $_ -> docs/$dest\n");
       copy $_, "docs/$dest";
@@ -177,7 +178,7 @@ sub is_template {
 }
 
 sub debug {
-  warn @_ if $ENV{APHRA_DEBUG};
+  carp @_ if $ENV{APHRA_DEBUG};
 }
 
 1;
