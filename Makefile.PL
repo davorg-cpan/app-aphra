@@ -8,6 +8,7 @@ WriteMakefile(
   EXE_FILES    => [ 'bin/aphra' ],
 
   PREREQ_PM    => {
+    Clone    => 0,
     Template => 0,
     Moose    => 0,
     'Template::Provider::Pandoc' => 0,

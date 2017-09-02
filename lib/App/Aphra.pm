@@ -34,7 +34,7 @@ use File::Copy;
 use File::Basename;
 use Getopt::Long;
 use Carp;
-use Clone;
+use Clone 'clone';
 
 our $VERSION = '0.0.1';
 
@@ -122,7 +122,7 @@ has template => (
 sub _build_template {
   my $self = shift;
 
-  my $exts = Clone $self->config-{extensions};
+  my $exts = clone $self->config->{extensions};
   delete $exts->{template};
 
   return Template->new(

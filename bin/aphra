@@ -6,7 +6,7 @@ aphra - Simple static sitebuilder in Perl
 
 =head1 SYNOPSIS
 
-    $ aphra
+    $ aphra build
 
 =head1 DESCRIPTION
 
