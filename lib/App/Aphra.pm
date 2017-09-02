@@ -136,11 +136,11 @@ sub build {
   -e $src or die "Cannot find $src\n";
   -d $src or die "$src is not a directory\n";
 
-  find({ wanted => $self->make_do_this, no_chdir => 1 },
+  find({ wanted => $self->_make_do_this, no_chdir => 1 },
        $self->config->{source});
 }
 
-sub make_do_this {
+sub _make_do_this {
   my $self = shift;
 
   return sub {
