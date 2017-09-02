@@ -161,7 +161,7 @@ sub make_do_this {
 
       my $template = s|^$src/||r;
 
-      # The output file need the ".tt" removed from the end.
+      # The output file needs the ".tt" removed from the end.
       my $out = $template =~ s|\.tt$||r;
 
       debug("tt: $template -> $out\n");
