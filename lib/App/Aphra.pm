@@ -1,8 +1,5 @@
 package App::Aphra;
 
-use strict;
-use warnings;
-
 use Moose;
 use Template;
 use Template::Provider::Pandoc;
