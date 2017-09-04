@@ -107,8 +107,8 @@ sub process {
       or croak $self->app->template->error;
   } else {
     my $file = $self->full_name;
-    debug("Copy: $file -> $dest");
-    copy $file, $dest;
+    debug("Copy: $file -> ", $self->destination_dir);
+    copy $file, $self->destination_dir;
   }
 }
 
