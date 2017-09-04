@@ -36,6 +36,8 @@ use Getopt::Long;
 use Carp;
 use Clone 'clone';
 
+use App::Aphra::File;
+
 our $VERSION = '0.0.2';
 
 has commands => (
