@@ -29,8 +29,6 @@ use Template;
 use Template::Provider::Pandoc;
 use FindBin '$Bin';
 use File::Find;
-use File::Path 'make_path';
-use File::Copy;
 use File::Basename;
 use Getopt::Long;
 use Carp;
@@ -173,45 +171,14 @@ sub _make_do_this {
   my $self = shift;
 
   return sub {
-    debug("File is: $_\n");
     return unless -f;
-    my $src = $self->config->{source};
-    debug("File::Find::dir: $File::Find::dir\n");
-    my $dest = $File::Find::dir =~ s|^$src/?||r;
-    debug("Dest: $dest\n");
 
-    debug("docs/$dest");
-    make_path "docs/$dest";
+    my $f = App::Aphra::File->new({
+      app => $self, filename => $_,
+    });
 
-    if ($self->is_template($_)) {
-      debug("It's a template");
-      # The template name needs to be relative to one of the paths
-      # in INCLUDE_PATH. So we need to remove $src from the start.
-
-      my $template = s|^$src/||r;
-
-      # The output file needs the ".tt" removed from the end.
-      my $out = $template =~ s|\.tt$||r;
-
-      debug("tt: $template -> $out\n");
-      $self->template->process($template, {}, $out)
-        or croak $self->template->error;
-    } else {
-      debug("Copy: $_ -> docs/$dest\n");
-      copy $_, "docs/$dest";
-    }
+    $f->process;
   };
-}
-
-sub is_template {
-  my $self = shift;
-  my ($file) = @_;
-
-  for (values %{$self->config->{extensions}}) {
-    return 1 if $file =~ /\.\Q$_\E$/;
-  }
-
-  return;
 }
 
 sub version {
@@ -230,9 +197,6 @@ process input templates and turn them into a web site.
 ENDOFHELP
 }
 
-sub debug {
-  carp @_ if $ENV{APHRA_DEBUG};
-}
 
 1;
 
