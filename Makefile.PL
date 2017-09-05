@@ -1,5 +1,11 @@
 use ExtUtils::MakeMaker;
 
+my $mm_ver = $ExtUtils::MakeMaker::VERSION;
+if ($mm_ver =~ /_/) { # developer release/version
+  $mm_ver = eval $mm_ver;
+  die $@ if $@;
+}
+
 WriteMakefile(
   NAME         => 'App::Aphra',
   VERSION_FROM => 'lib/App/Aphra.pm',
@@ -23,5 +29,9 @@ WriteMakefile(
         web  => 'https://github.com/davorg/app-aphra',
       },
     },
-  }
+  },
+  ($mm_ver >= 6.48
+    ? (MIN_PERL_VERSION => 5.006)
+    : ()
+  ),
 );
