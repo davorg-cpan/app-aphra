@@ -1,5 +1,5 @@
-App-Aphra-0.0.1/META.json
-App-Aphra-0.0.1/META.yml
+META.json
+META.yml
 bin/aphra
 lib/App/Aphra.pm
 lib/App/Aphra/File.pm
