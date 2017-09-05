@@ -43,6 +43,7 @@ has commands => (
   is => 'ro',
   default => sub { {
     build => \&build,
+    serve => \&serve,
   } },
 );
 
@@ -179,6 +180,18 @@ sub _make_do_this {
 
     $f->process;
   };
+}
+
+sub serve {
+  my $self = shift;
+
+  require App::HTTPThis;
+  if ($@) {
+    croak "App::HTTPThis must be installed for 'serve' command";
+  }
+
+  local @ARGV = $self->config->{target};
+  App::HTTPThis->new->run;
 }
 
 sub version {
