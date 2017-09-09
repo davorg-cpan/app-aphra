@@ -60,7 +60,7 @@ and will normally be stored in the layouts directory. See the L<Template
 Toolkit> documentation for more details of the C<WRAPPER> directive. The
 default value for this option is "page".
 
-    $ aphra --wrapper my_awesome_layput
+    $ aphra --wrapper my_awesome_layout
 
 =item B<target>
 
