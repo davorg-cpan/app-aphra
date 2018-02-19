@@ -61,8 +61,8 @@ sub _build_config_defaults {
     wrapper    => 'page',
     target     => 'docs',
     extensions => {
-      template => 'tt',
-      markdown => 'md',
+      tt => 'template',
+      md => 'markdown',
     },
     output     => 'html',
   };
