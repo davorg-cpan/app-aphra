@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.0.4] - 2018-02-23
+
+### Fixed
+
+- The extensions hash was the wrong way round.
+- Added a `serve` command.
+- Improved the tests.
+
 ## [0.0.3] - 2017-09-05
 
 ### Fixed

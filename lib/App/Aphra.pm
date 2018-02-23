@@ -36,7 +36,7 @@ use Clone 'clone';
 
 use App::Aphra::File;
 
-our $VERSION = '0.0.3';
+our $VERSION = '0.0.4';
 
 has commands => (
   isa => 'HashRef',
