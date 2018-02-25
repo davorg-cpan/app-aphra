@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.5] - 2018-02-25
+
+### Fixed
+
+- Another fix for the extensions problem.
+
 ## [0.0.4] - 2018-02-23
 
 ### Fixed
