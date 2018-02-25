@@ -124,7 +124,7 @@ sub _build_template {
   my $self = shift;
 
   my $exts = clone $self->config->{extensions};
-  delete $exts->{template};
+  delete $exts->{tt};
 
   return Template->new(
     LOAD_TEMPLATES => [
