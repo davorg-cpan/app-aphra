@@ -8,7 +8,7 @@ perl:
   - "5.14"
 
 before_install:
-  cpanm -n Devel::Cover::Report::Coveralls
+  cpanm -n Devel::Cover::Report::Coveralls && apt-get install pandoc
 script:
   perl Makefile.PL && make && cover -test -report coveralls
 
