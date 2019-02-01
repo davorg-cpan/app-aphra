@@ -34,6 +34,8 @@ output directory.
 
 You need to have L<App::HTTPThis> installed in order for this to work.
 
+=back
+
 =head1 OPTIONS
 
 C<aphra> takes a number of command line options which alter the way that it
