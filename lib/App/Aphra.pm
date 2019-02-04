@@ -210,6 +210,7 @@ process input templates and turn them into a web site.
 ENDOFHELP
 }
 
+__PACKAGE__->meta->make_immutable;
 
 1;
 
