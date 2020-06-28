@@ -1,3 +1,5 @@
+use compat::perl7;
+
 package App::Aphra::File;
 
 use Moose;

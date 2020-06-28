@@ -1,3 +1,5 @@
+use compat::perl7;
+
 =head1 NAME
 
 App::Aphra - A simple static sitebuilder in Perl.

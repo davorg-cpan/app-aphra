@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+use compat::perl7;
+
 =head1 NAME
 
 aphra - Simple static sitebuilder in Perl
