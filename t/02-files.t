@@ -1,3 +1,5 @@
+use compat::perl7;
+
 use Test::More;
 
 use App::Aphra;
