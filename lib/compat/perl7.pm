@@ -1,3 +1,13 @@
+=head1 compat::perl7
+
+=head2 Subroutines
+
+=head3 import
+
+Do the clever stuff.
+
+=cut
+
 package compat::perl7;
 
 # use compat::perl7 enables perl 5 code to function in a perl 7-ish way as much as possible compared to the version you are running.
