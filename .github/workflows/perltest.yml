@@ -37,7 +37,7 @@ jobs:
     name: Test coverage
     steps:
       - uses: actions/checkout@v3
-      - run: apt-get install pandoc
+      - run: apt-get -y install pandoc
       - name: Install modules
         run: cpanm -n --installdeps .
       - name: Coverage
