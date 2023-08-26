@@ -1,0 +1,6 @@
+#!/bin/sh
+
+ver=`perl -nE '/\@v([\d\.]+)/ and print $1 and exit' Dockerfile`
+echo Building version $ver
+docker build -t davorg/perl-app-aphra:latest -t davorg/perl-app-aphra:app-aphra_$ver .
+docker push -a docker.io/davorg/perl-app-aphra
