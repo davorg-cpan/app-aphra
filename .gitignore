@@ -1,6 +1,6 @@
 App-Aphra-*.tar.gz
 App-Aphra-*/
-*.codespace
+*code-workspace
 MYMETA.json
 MYMETA.yml
 Makefile
