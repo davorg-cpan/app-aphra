@@ -33,6 +33,7 @@ use File::Basename;
 use Getopt::Long;
 use Carp;
 use Clone 'clone';
+use YAML::XS 'LoadFile';
 
 use App::Aphra::File;
 
@@ -93,7 +94,26 @@ sub _build_config {
   for (keys %defaults) {
     $config{$_} = $opts{$_} // $defaults{$_};
   }
+
   return \%config;
+}
+
+has site_vars => (
+  isa => 'HashRef',
+  is  => 'ro',
+  lazy_build => 1,
+);
+
+sub _build_site_vars {
+  my $self = shift;
+
+  my $site_vars = {};
+
+  if (-f 'site.yml') {
+    $site_vars = LoadFile('site.yml');
+  }
+
+  return $site_vars;
 }
 
 has include_path => (
@@ -134,6 +154,9 @@ sub _build_template {
         OUTPUT_FORMAT => $self->config->{output},
       ),
     ],
+    VARIABLES    => {
+      site => $self->site_vars,
+    },
     INCLUDE_PATH => $self->include_path,
     OUTPUT_PATH  => $self->config->{target},
     WRAPPER      => $self->config->{wrapper},
