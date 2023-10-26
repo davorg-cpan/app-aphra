@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.0.7] - 2023-10-26
+
+### Added
+
+- Support for `site.yml`
+- Support for front matter in templates
+
 ## [0.0.6] - 2020-12-06
 
 ### Fixed
