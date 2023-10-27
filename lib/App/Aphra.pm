@@ -37,7 +37,7 @@ use YAML::XS 'LoadFile';
 
 use App::Aphra::File;
 
-our $VERSION = '0.0.7';
+our $VERSION = '0.1.0';
 
 has commands => (
   isa => 'HashRef',

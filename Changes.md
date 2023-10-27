@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.0] - 2023-10-27
+
+### Fixed
+
+- Only run conversion tests if `pandoc` is installed
+
 ## [0.0.7] - 2023-10-26
 
 ### Added
