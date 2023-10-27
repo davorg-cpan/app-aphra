@@ -6,6 +6,11 @@ use FindBin '$Bin';
 use Test::More;
 use App::Aphra;
 
+# Easy way to bail out if the pandoc executable isn't installed
+use Pandoc;
+plan skip_all => "pandoc isn't installed; this module won't work"
+  unless pandoc;
+
 chdir("$Bin/data1");
 
 @ARGV = ('build');
