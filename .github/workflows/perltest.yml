@@ -21,10 +21,14 @@ jobs:
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl }}
-      - run: sudo apt-get install pandoc
-      - run: perl -V
-      - run: cpanm --installdeps .
-      - run: prove -lv t
+      - name: Install pandoc
+        run: sudo apt-get install pandoc
+      - name: Perl version
+        run: perl -V
+      - name: Install CPAN dependencies
+        run: cpanm --installdeps .
+      - name: Run tests
+        run: prove -lv t
 
   coverage:
     runs-on: ubuntu-latest
@@ -32,7 +36,8 @@ jobs:
     name: Test coverage
     steps:
       - uses: actions/checkout@v4
-      - run: apt-get -y install pandoc
+      - name: Install pandoc
+        run: apt-get -y install pandoc
       - name: Install modules
         run: cpanm -n --installdeps .
       - name: Coverage
