@@ -113,6 +113,7 @@ sub process {
 
     $self->app->template->process($template, {
       page => ($front_matter->frontmatter_hashref // {}),
+      file => $self,
     }, $out)
       or croak $self->app->template->error;
   } else {
