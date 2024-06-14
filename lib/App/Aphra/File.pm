@@ -93,10 +93,10 @@ sub uri {
   my $self = shift;
 
   my $uri = $self->app->uri;
-  my $path = $self->destination_dir;
   my $base = $self->app->site_vars->{base};
+  my $path = $self->output_name;
   $path =~ s/^$base//;
-  $uri .= $path . $self->output_name;
+  $uri .= $path;
   $uri =~ s/index\.html$//;
   
   return URI->new($uri);
