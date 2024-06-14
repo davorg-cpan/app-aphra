@@ -7,6 +7,7 @@ use File::Path 'make_path';
 use File::Copy;
 use Text::FrontMatter::YAML;
 use Path::Tiny ();
+use URI;
 
 has [qw[path name extension ]] => (
   isa => 'Str',
@@ -86,6 +87,19 @@ sub full_name {
   my $full_name = $self->path . '/' . $self->name;
   $full_name .= '.' . $self->extension if $self->extension;
   return $full_name;
+}
+
+sub uri {
+  my $self = shift;
+
+  my $uri = $self->app->uri;
+  my $path = $self->destination_dir;
+  my $base = $self->app->site_vars->{base};
+  $path =~ s/^$base//;
+  $uri .= $path . $self->output_name;
+  $uri =~ s/index\.html$//;
+  
+  return URI->new($uri);
 }
 
 sub process {
