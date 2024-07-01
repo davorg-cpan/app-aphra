@@ -1,6 +1,18 @@
 # Change Log
 
-## [0.1.2] - 2024-06-16
+## [0.1.4] - 2024-07-01
+
+### Added
+
+- Support for redirection pages
+
+## [0.1.3] - 2024-06-14
+
+### Fixed
+
+- Bug in App::Aphra::File::uri
+
+## [0.1.2] - 2024-06-14
 
 ### Added
 
