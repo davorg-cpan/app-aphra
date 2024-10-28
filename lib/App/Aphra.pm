@@ -29,7 +29,7 @@ use Template;
 use Template::Provider::Pandoc;
 use FindBin '$Bin';
 use File::Find;
-use File::Basename;
+use Path::Tiny;
 use Getopt::Long;
 use Carp;
 use Clone 'clone';
@@ -248,7 +248,7 @@ sub make_redirects {
     my $to = $_->{to};
 
     my $outdir = dirname "$target$from";
-    mkdir $outdir;
+    path($outdir)->mkdir;
 
     open my $out_fh, '>', "$target$from"
       or die "Cannot open '$target$from' for writing: $!\n";
@@ -279,13 +279,13 @@ sub serve {
 }
 
 sub version {
-  my $me = basename $0;
+  my $me = path($0)->basename;
   say "\n$me version: $VERSION\n";
 }
 
 sub help {
   my $self = shift;
-  my $me = basename $0;
+  my $me = path($0)->basename;
   $self->version;
 
   say <<ENDOFHELP;
