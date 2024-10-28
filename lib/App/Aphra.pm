@@ -247,7 +247,7 @@ sub make_redirects {
 
     my $to = $_->{to};
 
-    my $outdir = dirname "$target$from";
+    my $outdir = path("$target$from")->dirname;
     path($outdir)->mkdir;
 
     open my $out_fh, '>', "$target$from"
