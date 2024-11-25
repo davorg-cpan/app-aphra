@@ -126,13 +126,14 @@ sub process {
     );
 
     my $front_matter_hashref = $front_matter->frontmatter_hashref // {};
+    my $template_data = $front_matter->data_text;
     my $orig_layout;
     if ($front_matter_hashref->{layout}) {
       $orig_layout = $self->app->template->{SERVICE}{WRAPPER};
       $self->app->template->{SERVICE}{WRAPPER} = [ $front_matter_hashref->{layout} ];
     }
 
-    $self->app->template->process($template, {
+    $self->app->template->process(\$template_data, {
       page => $front_matter_hashref,
       file => $self,
     }, $out)
