@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.2.4] - 2024-11-27
+
+### Fixed
+
+- Use new version of Template::Provider, which handles the frontmatter
+
 ## [0.2.3] - 2024-11-25
 
 ### Fixed
