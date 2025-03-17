@@ -22,7 +22,7 @@ I'll improve this documentation in the future.
 
 package App::Aphra;
 
-use 5.014;
+use 5.34.0;
 
 use Moose;
 use Template;
@@ -36,6 +36,7 @@ use Clone 'clone';
 use YAML::XS 'LoadFile';
 use Sys::Hostname;
 use URI;
+use Module::Load;
 
 use App::Aphra::File;
 
@@ -90,7 +91,7 @@ sub _build_config {
     $self->$_ and exit if $opts{$_};
   }
 
-  my %defaults = %{ $self->config_defaults };
+  my %defaults = $self->config_defaults->%*;
 
   my %config;
   for (keys %defaults) {
@@ -103,7 +104,15 @@ sub _build_config {
 has site_vars => (
   isa => 'HashRef',
   is  => 'ro',
-  lazy_build => 1,
+);
+
+sub BUILD {
+  shift->site_vars;
+}
+
+has plugins => (
+  isa => 'HashRef',
+  is  => 'ro',
 );
 
 sub _build_site_vars {
@@ -115,7 +124,33 @@ sub _build_site_vars {
     $site_vars = LoadFile('site.yml');
   }
 
+  $self->{plugins} = delete $site_vars->{plugins};
+  $self->{plugins} //= {};
+
+  $self->mk_plugins;
+
+use Data::Printer;
+p $site_vars;
+p $self->plugins;
+
   return $site_vars;
+}
+
+sub mk_plugins {
+  my $self = shift;
+
+  return unless defined $self->plugins;
+
+  for (keys $self->plugins->%*) {
+    next if exists $self->plugins->{$_}{disable}
+      and $self->plugins->{$_}{disable};
+    next if exists $self->plugins->{$_}{enable}
+      and $self->plugins->{$_}{disable};
+
+    my $plugin = "App::Aphra::Plugin::$_";
+    load $plugin;
+    $_ = $plugin->new( app => $self, config => $self->plugins->{$_} );
+  }
 }
 
 has include_path => (
@@ -163,6 +198,8 @@ sub _build_template {
     INCLUDE_PATH => $self->include_path,
     OUTPUT_PATH  => $self->config->{target},
     WRAPPER      => $self->config->{wrapper},
+    ENCODING     => 'utf8',
+    BINMODE      => ':utf8',
   );
 }
 
@@ -175,13 +212,15 @@ has uri => (
 sub _build_uri {
   my $self = shift;
 
-  return URI->new($self->site_vars->{uri}) if $self->site_vars->{uri};
+  if ($self->site_vars) {
+    return URI->new($self->site_vars->{uri}) if $self->site_vars->{uri};
+  }
 
-  my $host = $self->site_vars->{host} || hostname;
-  my $protocol = $self->site_vars->{protocol} || 'https';
+  my $host = $self->site_vars ? $self->site_vars->{host} || hostname : hostname;
+  my $protocol = $self->site_vars ? $self->site_vars->{protocol} || 'https' : 'https';
 
   my $uri = "$protocol://$host";
-  $uri .= ':' . $self->site_vars->{port} if $self->site_vars->{port};
+  $uri .= ':' . $self->site_vars->{port} if $self->site_vars and $self->site_vars->{port};
   $uri .= '/';
 
   return URI->new($uri);
@@ -211,8 +250,16 @@ sub build {
   -e $src or die "Cannot find $src\n";
   -d $src or die "$src is not a directory\n";
 
-  if ($self->site_vars->{redirects}) {
-    $self->make_redirects;
+  if (defined $self->plugins) {
+    for (keys $self->plugins->%*) {
+      warn "Plugin: $_\n";
+    }
+  }
+
+  if ($self->site_vars) {
+    if ($self->site_vars->{redirects}) {
+      $self->make_redirects;
+    }
   }
 
   find({ wanted => $self->_make_do_this, no_chdir => 1 },

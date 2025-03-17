@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### Changed
+
+- Use postfix dereferencing (requires Perl 5.34)
+
 ## [0.2.4] - 2024-11-27
 
 ### Fixed

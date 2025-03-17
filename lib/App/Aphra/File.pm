@@ -1,5 +1,7 @@
 package App::Aphra::File;
 
+use 5.34.0;
+
 use Moose;
 use Carp;
 use File::Basename;
@@ -26,12 +28,12 @@ around BUILDARGS => sub {
     croak;
   }
 
-  my %args = ref $_[0] ? %{$_[0]} : @_;
+  my %args = ref $_[0] ? $_[0]->%* : @_;
 
   croak "No app attribute\n" unless $args{app};
   if ($args{filename}) {
     debug("Got $args{filename}");
-    my @exts = keys %{ $args{app}->config->{extensions}};
+    my @exts = keys $args{app}->config->{extensions}->%*;
     my ($name, $path, $ext) = fileparse($args{filename}, @exts);
     chop($path) if $name;
     chop($name) if $ext;
@@ -93,7 +95,7 @@ sub uri {
   my $self = shift;
 
   my $uri = $self->app->uri;
-  my $base = $self->app->site_vars->{base};
+  my $base = $self->app->site_vars ? $self->app->site_vars->{base} : '';
   my $path = $self->output_name;
   $path =~ s/^$base//;
   $uri .= $path;
