@@ -158,7 +158,8 @@ sub _build_template {
       ),
     ],
     VARIABLES    => {
-      site => $self->site_vars,
+      site  => $self->site_vars,
+      aphra => $self,
     },
     INCLUDE_PATH => $self->include_path,
     OUTPUT_PATH  => $self->config->{target},
@@ -278,6 +279,11 @@ sub serve {
   local @ARGV = $self->config->{target};
   App::HTTPThis->new->run;
 }
+
+has ver => (
+  is => 'ro',
+  default => $VERSION,
+);
 
 sub version {
   my $me = path($0)->basename;
