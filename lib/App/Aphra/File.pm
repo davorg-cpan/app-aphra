@@ -121,8 +121,7 @@ sub process {
     debug("tt: $template -> $out");
 
     # Check if output file already exists
-    my $output_format = $self->app->config->{output} || 'html';
-    my $output_path = Path::Tiny::path($self->app->config->{target}, "$out.$output_format");
+    my $output_path = Path::Tiny::path($self->app->config->{target}, $out);
     if (-e $output_path) {
       warn "Output file $output_path already exists, skipping processing of ", $self->full_name, "\n";
       return;
