@@ -123,7 +123,8 @@ sub process {
     # Check if output file already exists
     my $output_path = Path::Tiny::path($self->app->config->{target}, $out);
     if (-e $output_path) {
-      warn "Output file $output_path already exists, skipping processing of ", $self->full_name, "\n";
+      my $source = $self->full_name;
+      warn "Output file $output_path already exists, skipping processing of $source\n";
       return;
     }
 
