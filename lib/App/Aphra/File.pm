@@ -140,7 +140,7 @@ sub process {
       $self->app->template->{SERVICE}{WRAPPER} = [ $front_matter_hashref->{layout} ];
     }
 
-    $self->app->template->process(\($front_matter->data_text), {
+    $self->app->template->process($template, {
       page => $front_matter_hashref,
       file => $self,
     }, $out, binmode => ':utf8')
