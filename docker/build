@@ -1,8 +1,103 @@
 #!/bin/sh
 
-cd "$( dirname -- "${BASH_SOURCE[0]}" )"
+# Change to the docker directory if not already there
+cd "$(dirname "$0")"
 
-ver=`perl -nE '/\@v?([\d\.]+)/ and print $1 and exit' Dockerfile`
-echo Building version $ver
-docker build -t davorg/aphra:latest -t davorg/aphra:app-aphra_$ver .
-docker push -a docker.io/davorg/aphra
+# Move to repository root
+cd ..
+
+# Function to extract version from tag format (RELEASE_x.x.x -> x.x.x)
+extract_version() {
+    echo "$1" | sed 's/^RELEASE_//'
+}
+
+# Function to get the highest RELEASE tag
+get_highest_release_tag() {
+    git tag -l 'RELEASE_*' | sort -V | tail -n 1
+}
+
+# Parse arguments
+if [ $# -eq 0 ]; then
+    # No argument provided, use highest RELEASE tag
+    version_arg=$(get_highest_release_tag)
+    if [ -z "$version_arg" ]; then
+        echo "Error: No RELEASE tags found in repository"
+        exit 1
+    fi
+    echo "No version specified, using highest tag: $version_arg"
+else
+    version_arg="$1"
+fi
+
+# Determine if input is a semver or a tag
+if echo "$version_arg" | grep -q '^RELEASE_'; then
+    # It's a tag in RELEASE_x.x.x format
+    tag="$version_arg"
+    ver=$(extract_version "$tag")
+else
+    # It's a semver version, construct the tag
+    ver="$version_arg"
+    tag="RELEASE_$ver"
+fi
+
+# Validate that the tag exists
+if ! git rev-parse "$tag" >/dev/null 2>&1; then
+    echo "Error: Tag '$tag' does not exist"
+    exit 1
+fi
+
+echo "Building version $ver from tag $tag"
+
+# Save current state
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+echo "Saving current state (branch: $current_branch)"
+
+# Stash any uncommitted changes (only if there are changes to stash)
+stash_created=0
+if ! git diff-index --quiet HEAD --; then
+    stash_name="docker-build-stash-$(date +%s)"
+    git stash push -u -m "$stash_name"
+    if [ $? -eq 0 ]; then
+        stash_created=1
+    fi
+fi
+
+# Checkout the tag
+echo "Checking out tag $tag"
+git checkout "$tag"
+checkout_result=$?
+
+if [ $checkout_result -ne 0 ]; then
+    echo "Error: Failed to checkout tag $tag"
+    if [ $stash_created -eq 1 ]; then
+        git stash pop
+    fi
+    exit 1
+fi
+
+# Build the Docker image
+cd docker
+echo "Building Docker image..."
+docker build -t davorg/app-blurfill:latest -t davorg/app-blurfill:$ver -f Dockerfile ..
+build_status=$?
+
+# Return to root for git operations
+cd ..
+
+# Reset to original state
+echo "Restoring original state"
+git checkout "$current_branch"
+
+# Pop stash if we created one
+if [ $stash_created -eq 1 ]; then
+    git stash pop
+fi
+
+# Only push if the build succeeded
+if [ $build_status -eq 0 ]; then
+    echo "Build successful, pushing images..."
+    docker push -a docker.io/davorg/app-blurfill
+else
+    echo "Docker build failed, skipping push"
+    exit 1
+fi
