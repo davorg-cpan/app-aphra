@@ -78,7 +78,7 @@ fi
 # Build the Docker image
 cd docker
 echo "Building Docker image..."
-docker build -t davorg/app-blurfill:latest -t davorg/app-blurfill:$ver -f Dockerfile ..
+docker build -t davorg/app-aphra:latest -t davorg/app-aphra:$ver -f Dockerfile ..
 build_status=$?
 
 # Return to root for git operations
@@ -96,7 +96,7 @@ fi
 # Only push if the build succeeded
 if [ $build_status -eq 0 ]; then
     echo "Build successful, pushing images..."
-    docker push -a docker.io/davorg/app-blurfill
+    docker push -a docker.io/davorg/app-aphra
 else
     echo "Docker build failed, skipping push"
     exit 1
