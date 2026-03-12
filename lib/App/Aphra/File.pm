@@ -9,6 +9,8 @@ use Text::FrontMatter::YAML;
 use Path::Tiny ();
 use URI;
 
+our $VERSION = '0.2.10';
+
 has [qw[path name extension ]] => (
   isa => 'Str',
   is  => 'ro',
