@@ -17,7 +17,7 @@ WriteMakefile(
     Clone    => 0,
     Template => 0,
     Moose    => 0,
-    'Template::Provider::Pandoc' => '0.1.1', # For working STRIP_FRONT_MATTER
+    'Template::Provider::Pandoc' => '0.1.2', # First version to declare $VERSION correctly
     'Text::FrontMatter::YAML' => 0,
     'Path::Tiny' => '0.125', # Addition of mkdir()
     'YAML::XS' => 0,
