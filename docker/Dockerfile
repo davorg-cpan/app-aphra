@@ -13,12 +13,11 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Install dependencies first (Docker cache optimisation)
-COPY cpanfile* Makefile.PL ./
-RUN cpanm -n App::HTTPThis \
- && cpanm -n --installdeps .
+RUN cpanm -n App::HTTPThis~0.11.1
 
 # Copy application source
 COPY . .
+RUN cpanm -n --installdeps .
 
 # Install Aphra itself
 RUN cpanm -n .
